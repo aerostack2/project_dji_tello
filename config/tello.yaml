@@ -1,0 +1,44 @@
+/**:
+  ros__parameters:
+    use_sim_time: False
+  platform:
+    ros__parameters:
+      cmd_freq: 100.0  # Hz of platform commands send
+      info_freq: 10.0  # Hz of platform info publish
+      sensor_freq: 10.0  # Hz of platform sensor publish
+  state_estimator:
+    ros__parameters:
+      plugin_name: raw_odometry
+      use_ignition_tf: False
+  controller_manager:
+    ros__parameters:
+      plugin_name: pid_speed_controller
+      cmd_freq: 100.0  # Hz (default: 100.0)
+      info_freq: 10.0  # Hz (default: 10.0)
+      odom_frame_id: "odom"
+      base_frame_id: "base_link"
+      use_bypass: true
+  TakeoffBehavior:
+    ros__parameters:
+      takeoff_plugin_name: takeoff_plugin_platform
+      takeoff_height: 1.0  # [m]
+      takeoff_speed: 0.2  # [m/s]
+      takeoff_threshold: 0.1  # [m]
+      tf_timeout_threshold: 0.5  # [s]
+  LandBehavior:
+    ros__parameters:
+      land_plugin_name: land_plugin_platform
+      land_speed: 0.4  # [m/s]
+      tf_timeout_threshold: 0.5  # [s]
+  GoToBehavior:
+    ros__parameters:
+      go_to_plugin_name: go_to_plugin_position
+      go_to_speed: 0.5  # [m/s]
+      go_to_threshold: 0.2  # [m]
+      tf_timeout_threshold: 0.5  # [s]
+  FollowPathBehavior:
+    ros__parameters:
+      follow_path_plugin_name: follow_path_plugin_position
+      follow_path_speed: 0.5  # [m/s]
+      follow_path_threshold: 0.1  # [m]
+      tf_timeout_threshold: 0.5  # [s]

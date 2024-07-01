@@ -22,39 +22,26 @@ windows:
       panes:
         - ros2 launch as2_platform_tello tello_platform.launch.py
             namespace:=<%= drone_namespace %>
-            use_sim_time:=false
-            platform_config_file:=config/platform.yaml
+            platform_config_file:=config/tello.yaml
   - state_estimator:
       layout:
       panes:
         - ros2 launch as2_state_estimator state_estimator_launch.py
             namespace:=<%= drone_namespace %>
-            use_sim_time:=false
-            plugin_name:=raw_odometry
-            plugin_config_file:=config/state_estimator.yaml
+            config_file:=config/tello.yaml
   - controller:
       layout:
       panes:
         - ros2 launch as2_motion_controller controller_launch.py
             namespace:=<%= drone_namespace %>
-            use_sim_time:=false
-            motion_controller_config_file:=config/motion_controller.yaml
-            plugin_name:=pid_speed_controller
+            config_file:=config/tello.yaml
             plugin_config_file:=config/motion_controller_plugin.yaml   
   - behaviors:
       layout:
       panes:
         - ros2 launch as2_behaviors_motion motion_behaviors_launch.py
             namespace:=<%= drone_namespace %>
-            use_sim_time:=false
-            follow_path_plugin_name:=follow_path_plugin_<%= behavior_type %>
-            follow_path_config_file:=config/follow_path_behavior.yaml
-            go_to_plugin_name:=go_to_plugin_<%= behavior_type %>
-            go_to_config_file:=config/goto_behavior.yaml
-            takeoff_plugin_name:=takeoff_plugin_platform
-            takeoff_config_file:=config/takeoff_behavior.yaml
-            land_plugin_name:=land_plugin_platform
-            land_config_file:=config/land_behavior.yaml
+            config_file:=config/tello.yaml
         <%- if behavior_type == "trajectory" %>
         - ros2 launch as2_behaviors_trajectory_generation generate_polynomial_trajectory_behavior_launch.py
             namespace:=<%= drone_namespace %>
