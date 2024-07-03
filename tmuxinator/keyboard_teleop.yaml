@@ -3,6 +3,7 @@
 drone_namespace = @settings["drone_namespace"]
 %>
 
+name: keyboard_teleop
 attach: true
 root: ./
 startup_window: keyboard_teleop

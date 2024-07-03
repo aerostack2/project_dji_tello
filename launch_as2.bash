@@ -44,6 +44,9 @@ tmuxinator start -n ${drone} -p tmuxinator/aerostack2.yaml \
 echo "Background processes started ${drone}..."
 wait
 
+tmuxinator start -n mocap -p tmuxinator/mocap4ros2.yaml &
+wait
+
 if [[ ${record_rosbag} == "true" ]]; then
     tmuxinator start -p tmuxinator/rosbag.yaml \
         drones=${drone} &

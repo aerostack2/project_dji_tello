@@ -1,0 +1,20 @@
+<%
+# Input parameters
+drone_namespace  = @settings["drone_namespace"]
+%>
+
+name: mocap
+attach: false
+root: ./
+on_project_start: ". ${HOME}/mocap_ws/install/setup.sh"
+windows:
+  - mocap:
+      layout:
+      panes:
+        - ros2 launch mocap4r2_optitrack_driver optitrack2.launch.py
+            namespace:=mocap
+            config_file:=config/mocap4r2_optitrack.yaml
+        - sleep 1; ros2 lifecycle set /mocap/mocap4r2_optitrack_driver_node activate
+        # - ros2 launch as2_visualization swarm_viz.launch.py
+        #     namespace_list:=<%= drone_namespace %>
+        #     rviz_config:=ground_stattion/rviz2_config.rviz
