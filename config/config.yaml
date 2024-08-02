@@ -1,8 +1,9 @@
 /**:
-  # # Global Parameters
-  # ros__parameters:
-  #   tf_timeout_threshold: 0.05
+  # Global Parameters
+  ros__parameters:
+    tf_timeout_threshold: 0.05
 
+/**:
   # Basic Robotics Functions
   # Platform
   platform:
