@@ -5,9 +5,9 @@ usage() {
     echo "      -t: launch keyboard teleoperation. Default not launch"
     echo "      -v: open rviz. Default not launch"
     echo "      -r: record rosbag. Default not launch"
-    echo "      -n: drone namespaces, comma separated. Default get from world config file"
+    echo "      -n: drone namespaces, comma separated. Default get from world description config file"
     echo "      -m: launch mocap4ros2. Default launch"
-    echo "      -g: launch using gnome-terminal instead of tmux"
+    echo "      -g: launch using gnome-terminal instead of tmux. Default not set"
 }
 
 # Initialize variables with default values
@@ -54,7 +54,7 @@ while getopts "mtvrn:g" opt; do
   esac
 done
 
-# If no drone namespaces are provided, get them from the world config file
+# If no drone namespaces are provided, get them from the world description config file
 if [ -z "$drones_namespace_comma" ]; then
   drones_namespace_comma=$(python3 utils/get_drones.py -p config/config.yaml --sep ',')
 fi

@@ -1,7 +1,6 @@
 <%
 # Input parameters
 drone_namespace = @settings["drone_namespace"]
-behavior_tree   = @settings["behavior_tree"] == "true"
 %>
 name: <%= drone_namespace %>
 attach: false
@@ -49,11 +48,10 @@ windows:
   - mission_execution:
       layout:
       panes:
-        <%- if behavior_tree %>
+        # Behavior tree
         - ros2 launch as2_behavior_tree behavior_trees.launch.py
             drone_id:=<%= drone_namespace %>
             tree:=./trees/square.xml
-        <%- end %>
 
   # Mission monitoring
   - mission_monitoring:

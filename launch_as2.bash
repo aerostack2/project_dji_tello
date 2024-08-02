@@ -2,22 +2,17 @@
 
 usage() {
     echo "  options:"
-    echo "      -b: launch behavior tree"
-    echo "      -n: drone namespaces, comma separated. Default get from config file"
-    echo "      -g: launch using gnome-terminal instead of tmux"
+    echo "      -n: select drones namespace to launch, values are comma separated. By default, it will get all drones from config file"
+    echo "      -g: launch using gnome-terminal instead of tmux. Default not set"
 }
 
 # Initialize variables with default values
-behavior_tree="false"
 drones_namespace_comma=""
 use_gnome="false"
 
 # Arg parser
-while getopts "bn:g" opt; do
+while getopts "n:g" opt; do
   case ${opt} in
-    b )
-      behavior_tree="true"
-      ;;
     n )
       drones_namespace_comma="${OPTARG}"
       ;;
@@ -39,7 +34,7 @@ while getopts "bn:g" opt; do
   esac
 done
 
-# If no drone namespaces are provided, get them from the world config file
+# If no drone namespaces are provided, get them from the world description config file
 if [ -z "$drones_namespace_comma" ]; then
   drones_namespace_comma=$(python3 utils/get_drones.py -p config/config.yaml --sep ',')
 fi
@@ -62,7 +57,6 @@ for namespace in ${drone_namespaces[@]}; do
   fi
   eval "tmuxinator ${tmuxinator_mode} -n ${namespace} -p tmuxinator/aerostack2.yaml \
     drone_namespace=${namespace} \
-    behavior_tree=${behavior_tree} \
     ${tmuxinator_end}"
 
   sleep 0.1 # Wait for tmuxinator to finish
