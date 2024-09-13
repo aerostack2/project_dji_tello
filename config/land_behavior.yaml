@@ -1,4 +1,0 @@
-/**:
-  ros__parameters:
-    land_speed: 0.4  # [m/s]
-    tf_timeout_threshold: 0.5  # [s]

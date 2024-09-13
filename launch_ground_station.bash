@@ -2,19 +2,39 @@
 
 usage() {
     echo "  options:"
-    echo "      -n: select drones namespace to launch, values are comma separated. By default, it will get all drones from config file"
+    echo "      -t: launch keyboard teleoperation. Default not launch"
+    echo "      -v: open rviz. Default not launch"
+    echo "      -r: record rosbag. Default not launch"
+    echo "      -n: drone namespaces, comma separated. Default get from world description config file"
+    echo "      -m: launch mocap4ros2. Default launch"
     echo "      -g: launch using gnome-terminal instead of tmux. Default not set"
 }
 
 # Initialize variables with default values
+keyboard_teleop="false"
+rviz="false"
+rosbag="false"
 drones_namespace_comma=""
+mocap4ros2="true"
 use_gnome="false"
 
-# Arg parser
-while getopts "n:g" opt; do
+# Parse command line arguments
+while getopts "mtvrn:g" opt; do
   case ${opt} in
+    t )
+      keyboard_teleop="true"
+      ;;
+    v )
+      rviz="true"
+      ;;
+    r )
+      rosbag="true"
+      ;;
     n )
       drones_namespace_comma="${OPTARG}"
+      ;;
+    m )
+      mocap4ros2="false"
       ;;
     g )
       use_gnome="true"
@@ -25,7 +45,7 @@ while getopts "n:g" opt; do
       exit 1
       ;;
     : )
-      if [[ ! $OPTARG =~ ^[wrt]$ ]]; then
+      if [[ ! $OPTARG =~ ^[swrt]$ ]]; then
         echo "Option -$OPTARG requires an argument" >&2
         usage
         exit 1
@@ -49,22 +69,18 @@ if [[ ${use_gnome} == "true" ]]; then
   tmuxinator_end="> ${tmp_file} && python3 utils/tmuxinator_to_genome.py -p ${tmp_file} && wait"
 fi
 
-# Launch aerostack2 for each drone namespace
-for namespace in ${drone_namespaces[@]}; do
-  base_launch="false"
-  if [[ ${namespace} == ${drone_namespaces[0]} ]]; then
-    base_launch="true"
-  fi
-  eval "tmuxinator ${tmuxinator_mode} -n ${namespace} -p tmuxinator/aerostack2.yaml \
-    drone_namespace=${namespace} \
-    ${tmuxinator_end}"
-
-  sleep 0.1 # Wait for tmuxinator to finish
-done
+# Launch aerostack2 ground station
+eval "tmuxinator ${tmuxinator_mode} -n ground_station -p tmuxinator/ground_station.yaml \
+  drone_namespace=${drones_namespace_comma} \
+  keyboard_teleop=${keyboard_teleop} \
+  rviz=${rviz} \
+  rosbag=${rosbag} \
+  mocap4ros2=${mocap4ros2} \
+  ${tmuxinator_end}"
 
 # Attach to tmux session
 if [[ ${use_gnome} == "false" ]]; then
-  tmux attach-session -t ${drone_namespaces[0]}
+  tmux attach-session -t ground_station
 # If tmp_file exists, remove it
 elif [[ -f ${tmp_file} ]]; then
   rm ${tmp_file}

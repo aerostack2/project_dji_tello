@@ -1,6 +1,0 @@
-/**:
-  ros__parameters:
-    takeoff_height: 1.0  # [m]
-    takeoff_speed: 0.2  # [m/s]
-    takeoff_threshold: 0.1  # [m]
-    tf_timeout_threshold: 0.5  # [s]
