@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
-<root main_tree_to_execute="BehaviorTree">
+<root BTCPP_format="4">
     <!-- ////////// -->
     <BehaviorTree ID="BehaviorTree">
-        <SequenceStar>
+        <Sequence>
             <Decorator ID="WaitForEvent" result="" topic_name="start">
                 <AlwaysSuccess/>
             </Decorator>
@@ -12,7 +12,7 @@
             <Action ID="GoTo" max_speed="0.5" pose="2;2;1" yaw_angle="0.0" yaw_mode="0"/>
             <Action ID="GoTo" max_speed="0.5" pose="0;0;1" yaw_angle="0.0" yaw_mode="0"/>
             <Action ID="Land" speed="0.5"/>
-        </SequenceStar>
+        </Sequence>
     </BehaviorTree>
     <!-- ////////// -->
     <TreeNodesModel>
