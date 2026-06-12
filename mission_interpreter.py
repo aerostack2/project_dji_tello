@@ -148,15 +148,15 @@ if __name__ == '__main__':
 
     rclpy.init()
 
-    interpreter = MissionInterpreter(
-        mission=mission,
-        use_sim_time=use_sim_time)
-    
+    interpreter = MissionInterpreter(use_sim_time=use_sim_time)
+    interpreter.load_mission(0, mission)
+
     print('Start mission')
     interpreter.drone.arm()
     interpreter.drone.offboard()
     print('Run mission')
-    interpreter.perform_mission()
+    interpreter.start_mission(0, 0)
+    interpreter.exec_thread.join()
 
     print("Mission completed")
     interpreter.shutdown()
