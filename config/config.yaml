@@ -19,9 +19,10 @@
       plugin_name: "ground_truth"
       ground_truth:
         mocap_sub_topic: "/mocap/rigid_bodies"  # Non-empty: subscribe to mocap instead of a pose topic.
-        twist_sub_topic: ""  # Empty: differentiate the mocap pose for twist. Required — nothing
-                             # publishes ground_truth/twist on a mocap rig, and the pose is only
-                             # published together with the twist.
+        twist_sub_topic: ""  # Empty: differentiate the mocap pose for twist. This is the
+                             # plugin default; kept explicit because nothing publishes
+                             # ground_truth/twist on a mocap rig, and naming a silent
+                             # topic here would stop the pose being published at all.
         twist_smooth_filter_cte: 0.1  # (0,1]; 1 = no filter. Applies to the differentiated twist.
 
       # # Indoor Motion Capture, fused with the IMU (simple_ekf)
